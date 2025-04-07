@@ -1,37 +1,54 @@
- 
 'use client'
-import { ICharacter } from '@/interfaces/Character'
-import { ActionDispatch, createContext, useReducer } from 'react'
+import { ICharacterContext } from '@/interfaces/Character'
+import { ActionDispatch, createContext, useContext } from 'react'
 import { ICharacterActions, ICharacterHandle } from './types'
 
-export const initialCharacters: ICharacter[] = []
-
+export const initialCharacters: ICharacterContext = {
+  characters: [],
+  favorites: [],
+  total: 0
+}
 
 export const CharacterContext = createContext(initialCharacters)
 export const CharacterActionContext =
-  createContext<ActionDispatch<[action: ICharacterHandle]> | undefined>(undefined)
+  createContext<ActionDispatch<[action: ICharacterHandle]> | null>(null)
 
-export const characterReducer = (state: ICharacter[], action: ICharacterHandle) => {
+export const CharacterReducer = (
+  state: ICharacterContext,
+  action: ICharacterHandle
+) => {
   if (!state || !action) return state
-  switch(action.type) {
-    case ICharacterActions.ADD:
-      if (state.length === 0) return action.payload
-      return [
+  switch (action.type) {
+    case ICharacterActions.ADD_CHARACTERS:
+      if (
+        state.characters.length === 0 ||
+        !action.payload.characters
+      ) return action.payload
+      const newCharacters = action.payload.characters?.filter(
+        (newChar) => !state.characters.some((char) => char.id === newChar.id)
+      )
+      return {
         ...state,
-        ...action.payload
-      ]
+        characters: [
+          ...state.characters,
+          ...newCharacters,
+        ],
+        total: action.payload.total
+      }
+    case ICharacterActions.ADD_FAVORITE:
+      return {
+        ...state,
+        favorites: [...state.favorites || [], action.payload.favorite],
+      }
+    case ICharacterActions.REMOVE_FAVORITE:
+      return {
+        ...state,
+        favorites: state.favorites.filter(item => item !== action.payload.favorite),
+      }
     default:
       return state
   }
 }
 
-export const useCharactersContext = () => {
-  const [characterContext, dispatchCharacterContext] = useReducer(
-    characterReducer,
-    initialCharacters
-  )
-  return {
-    characterContext,
-    dispatchCharacterContext
-  }
-}
+export const useCharacters = () => useContext(CharacterContext)
+export const useCharactersActions = () => useContext(CharacterActionContext)

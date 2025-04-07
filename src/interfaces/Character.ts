@@ -16,3 +16,14 @@ export interface ICharacter {
   url: string
   vehicles: string[]
 }
+
+export interface ICharacterAdapted extends ICharacter {
+  id?: number
+  page?: number
+}
+
+export interface ICharacterContext {
+  characters: ICharacterAdapted[],
+  total: number
+  favorites: number[]
+}

@@ -1,9 +1,9 @@
-
 import { Breadcrumb, Navbar } from '@/components'
 import type { Metadata } from 'next'
 import { ReactNode } from 'react'
 import { GlobalProvider } from './context.provider'
 import GlobalStyles, { Container } from './global.styles'
+import StyledComponentsRegistry from './lib/registry'
 
 export const metadata: Metadata = {
   title: {
@@ -23,14 +23,16 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <GlobalProvider>
-          <GlobalStyles />
-          <Navbar />
-          <Breadcrumb />
-          <Container>
-            {children}
-          </Container>
+          <StyledComponentsRegistry>
+            <GlobalStyles />
+            <Navbar />
+            <Breadcrumb />
+            <Container>
+              {children}
+            </Container>
+          </StyledComponentsRegistry>
         </GlobalProvider>
       </body>
-    </html>
+    </html >
   )
 }

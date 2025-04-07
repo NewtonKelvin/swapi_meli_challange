@@ -1,11 +1,13 @@
 'use client'
-import useUtils from '@/utils'
 import { Typography } from '@mui/material'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { BreadcrumbContainer } from './styles'
 
 const Breadcrumb = () => {
-  const { pathName } = useUtils()
+  const path = usePathname().replace(/[^a-zA-Z]+/g, '')
+  const pathName =
+    String(path).charAt(0).toUpperCase() + String(path).slice(1) || 'Home'
   return (
     <BreadcrumbContainer aria-label="breadcrumb">
       <Link color="inherit" href="/">
@@ -17,7 +19,12 @@ const Breadcrumb = () => {
       >
         SWAPI
       </Link>
-      <Typography sx={{ color: 'text.primary' }} fontWeight='bold'>
+      <Typography
+        sx={{ color: 'text.primary' }}
+        fontWeight='bold'
+        fontFamily='Outfit, Sans-serif'
+        textTransform='uppercase'
+      >
         {pathName}
       </Typography>
     </BreadcrumbContainer>

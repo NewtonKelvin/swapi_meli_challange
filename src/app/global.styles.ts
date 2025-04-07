@@ -11,7 +11,8 @@ export const Colors = {
   beaver: '#aa846dff',
   silver_lake_blue: '#688eb9ff',
   powder_blue: '#bac8d9ff',
-  raisin_black: '#1a1a23ff'
+  raisin_black: '#1a1a23ff',
+  sage: '#bab768'
 }
 
 const GlobalStyles = createGlobalStyle`
@@ -21,14 +22,13 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
   }
-  a, .MuiTypography-root {
+  a, button, .MuiTypography-root {
     text-decoration: none;
     font-family: "Outfit", sans-serif;
   }
 `
 
-export const Container = styled.div`
-  /* background-color: red; */
+export const Container = styled.main`
   margin: 0;
   display: flex;
   flex-direction: row;

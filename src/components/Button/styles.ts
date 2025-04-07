@@ -1,6 +1,9 @@
 import styled from 'styled-components'
 
-export const CustomButton = styled.div<{ background: string, color: string }>`
+export const CustomButton = styled.div<{
+  background: string,
+  color: string
+}>`
   cursor: pointer;
   height: 16px;
   font-size: 1rem;
@@ -9,7 +12,7 @@ export const CustomButton = styled.div<{ background: string, color: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 24px;
+  padding: 12px 12px;
   border-radius: 8px;
   max-width: 30%;
   overflow: hidden;

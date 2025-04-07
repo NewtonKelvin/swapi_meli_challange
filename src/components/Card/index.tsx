@@ -1,6 +1,9 @@
 'use client'
 import { Colors } from '@/app/global.styles'
-import { ICharacter } from '@/interfaces/Character'
+import { useCharactersActions } from '@/context'
+import { ICharacterActions } from '@/context/types'
+import { ICharacterAdapted } from '@/interfaces/Character'
+import { Star } from '@mui/icons-material'
 import { Typography } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -8,7 +11,8 @@ import Button from '../Button'
 import { CardStyle, ImageButtons, ImageContainer, InfoContainer } from './styles'
 
 interface ICharacterCard {
-  character: ICharacter
+  character: ICharacterAdapted,
+  favorite: boolean
 }
 
 interface ICharacterInfo {
@@ -24,6 +28,7 @@ const CharacterInfo = ({ label, value, title = false }: ICharacterInfo) => {
     textTransform: 'uppercase'
   } : {
     color: Colors.silver_lake_blue
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any
   return (
     <Typography {...labelProps}>
@@ -32,7 +37,17 @@ const CharacterInfo = ({ label, value, title = false }: ICharacterInfo) => {
   )
 }
 
-const CharacterCard = ({ character }: ICharacterCard) => {
+const CharacterCard = ({ character, favorite }: ICharacterCard) => {
+
+  const characterActionsContext = useCharactersActions()
+  const handleFavorite = () => {
+    characterActionsContext?.({
+      type: favorite
+        ? ICharacterActions.REMOVE_FAVORITE
+        : ICharacterActions.ADD_FAVORITE,
+      payload: { favorite: character.id }
+    })
+  }
 
   return (
     <CardStyle>
@@ -41,12 +56,13 @@ const CharacterCard = ({ character }: ICharacterCard) => {
           <Button
             background={Colors.raisin_black}
             color={Colors.white}
-            text={character.homeworld || '?'}
+            text={character.homeworld.replace(/\D/g, '') || '?'}
           />
           <Button
             background={Colors.raisin_black}
-            color={Colors.white}
-            text={character.species[0] || '?'}
+            handleClick={handleFavorite}
+            color={favorite ? Colors.sage : Colors.white}
+            icon={<Star fontSize='small' />}
           />
         </ImageButtons>
         <Image

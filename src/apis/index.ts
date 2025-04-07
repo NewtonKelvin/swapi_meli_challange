@@ -7,7 +7,7 @@ interface IPeople {
   results: ICharacter[]
 }
 
-export const GetCharacters = async (): Promise<IPeople> => (
-  await fetch(`${process.env.API_BASE_URL}/people`)
+export const GetCharactersAPI = async (page: number): Promise<IPeople> => (
+  await fetch(`${process.env.API_BASE_URL}/people/?page=${page}`)
     .then(res => res.json())
 )

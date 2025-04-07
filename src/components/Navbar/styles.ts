@@ -15,11 +15,11 @@ const NavbarStyles = styled.div`
 `
 
 export const Title = styled(Typography)`
-  font-size: 1rem;
-  font-weight: bold;
   a {
     text-decoration: none;
     color: ${Colors.white};
+    font-size: 1rem;
+    font-weight: bold;
   }
 `
 
