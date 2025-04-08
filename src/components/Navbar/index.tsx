@@ -1,4 +1,6 @@
 'use client'
+import { Colors } from '@/app/global.styles'
+import useUtils from '@/utils'
 import debounce from 'lodash.debounce'
 import Link from 'next/link'
 import { ChangeEvent, useCallback, useState } from 'react'
@@ -6,6 +8,7 @@ import Input from '../Input'
 import NavbarStyles, { NavMenu, Title } from './styles'
 
 const Navbar = () => {
+  const { currentPath } = useUtils()
   const [search, setSearch] = useState('')
   const [debounceValue, setDebounceValue] = useState('')
   const debouncedSave = useCallback(
@@ -31,9 +34,33 @@ const Navbar = () => {
         type='text'
       />
       <NavMenu>
-        <Link href='/favorites'>Favorites</Link>
-        <Link href='/characters'>Characters</Link>
-        <Link href='/planets'>Planets</Link>
+        <Link
+          href='/favorites'
+          style={{
+            color:
+              currentPath === 'Favorites'
+                ? Colors.white
+                : Colors.paynes_gray
+          }}
+        >Favorites</Link>
+        <Link
+          href='/characters'
+          style={{
+            color:
+              currentPath === 'Characters'
+                ? Colors.white
+                : Colors.paynes_gray
+          }}
+        >Characters</Link>
+        <Link
+          href='/planets'
+          style={{
+            color:
+              currentPath === 'Planets'
+                ? Colors.white
+                : Colors.paynes_gray
+          }}
+        >Planets</Link>
       </NavMenu>
     </NavbarStyles>
   )

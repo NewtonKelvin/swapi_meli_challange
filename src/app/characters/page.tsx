@@ -10,7 +10,6 @@ import { ChangeEvent, useEffect, useState } from 'react'
 // const ITEMS_PER_PAGE = 10
 
 const CharacterPage = () => {
-
   const characterActionsContext = useCharactersActions()
   const characterContext = useCharacters()
 
@@ -49,15 +48,6 @@ const CharacterPage = () => {
   const handleChangePage = (e: ChangeEvent<unknown>, newPage: number) => {
     setPagination(prev => ({ ...prev, current: newPage }))
   }
-
-  // console.log('@@ CHARACTERS', {
-  //   page: pagination.current,
-  //   char: characterContext.characters.length,
-  //   onPage: paginatedCharacters.length
-  // })
-  console.log('@@', {
-    favorites: characterContext.favorites
-  })
 
   useEffect(() => {
     getCharacters()

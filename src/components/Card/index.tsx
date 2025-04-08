@@ -41,11 +41,12 @@ const CharacterCard = ({ character, favorite }: ICharacterCard) => {
 
   const characterActionsContext = useCharactersActions()
   const handleFavorite = () => {
+    console.log('@@ ADD')
     characterActionsContext?.({
       type: favorite
         ? ICharacterActions.REMOVE_FAVORITE
         : ICharacterActions.ADD_FAVORITE,
-      payload: { favorite: character.id }
+      payload: { favorite: character }
     })
   }
 

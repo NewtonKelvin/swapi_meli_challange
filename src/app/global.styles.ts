@@ -18,13 +18,13 @@ export const Colors = {
 const GlobalStyles = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
   body, html {
-    font-family: "Outfit", sans-serif;
+    font-family: "Outfit", sans-serif !important;
     margin: 0;
     padding: 0;
   }
   a, button, .MuiTypography-root {
     text-decoration: none;
-    font-family: "Outfit", sans-serif;
+    font-family: "Outfit", sans-serif !important;
   }
 `
 
@@ -36,6 +36,8 @@ export const Container = styled.main`
   gap: 36px;
   padding: 36px;
   flex-flow: wrap;
+  background-color: ${Colors.night};
+  height: 100%;
 `
 
 export default GlobalStyles

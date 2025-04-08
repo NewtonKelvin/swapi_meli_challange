@@ -1,13 +1,11 @@
 'use client'
+import useUtils from '@/utils'
 import { Typography } from '@mui/material'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { BreadcrumbContainer } from './styles'
 
 const Breadcrumb = () => {
-  const path = usePathname().replace(/[^a-zA-Z]+/g, '')
-  const pathName =
-    String(path).charAt(0).toUpperCase() + String(path).slice(1) || 'Home'
+  const { currentPath } = useUtils()
   return (
     <BreadcrumbContainer aria-label="breadcrumb">
       <Link color="inherit" href="/">
@@ -25,7 +23,7 @@ const Breadcrumb = () => {
         fontFamily='Outfit, Sans-serif'
         textTransform='uppercase'
       >
-        {pathName}
+        {currentPath}
       </Typography>
     </BreadcrumbContainer>
   )

@@ -1,5 +1,5 @@
 'use client'
-import { ICharacterContext } from '@/interfaces/Character'
+import { ICharacter, ICharacterContext } from '@/interfaces/Character'
 import { ActionDispatch, createContext, useContext } from 'react'
 import { ICharacterActions, ICharacterHandle } from './types'
 
@@ -36,15 +36,27 @@ export const CharacterReducer = (
         total: action.payload.total
       }
     case ICharacterActions.ADD_FAVORITE:
-      return {
-        ...state,
-        favorites: [...state.favorites || [], action.payload.favorite],
+      const stored: ICharacter[] = JSON.parse(localStorage.getItem('favChars') as string)
+      let newItem
+      if (stored?.length === 0) {
+        newItem = action.payload.favorite
+        localStorage.setItem('favChars', JSON.stringify(newItem))
+        return state
+      } else {
+        newItem = [...stored || [], action.payload.favorite]
+        localStorage.setItem('favChars', JSON.stringify(newItem))
+        return state
       }
-    case ICharacterActions.REMOVE_FAVORITE:
-      return {
-        ...state,
-        favorites: state.favorites.filter(item => item !== action.payload.favorite),
-      }
+
+    // return {
+    //   ...state,
+    //   favorites: [...state.favorites || [], action.payload.favorite],
+    // }
+    // case ICharacterActions.REMOVE_FAVORITE:
+    //   return {
+    //     ...state,
+    //     favorites: state.favorites.filter(item => item !== action.payload.favorite),
+    //   }
     default:
       return state
   }

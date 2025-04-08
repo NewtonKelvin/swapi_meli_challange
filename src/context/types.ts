@@ -1,4 +1,4 @@
-import { ICharacterAdapted } from '@/interfaces/Character'
+import { ICharacter, ICharacterAdapted } from '@/interfaces/Character'
 
 
 export enum ICharacterActions {
@@ -10,7 +10,7 @@ export enum ICharacterActions {
 export interface ICharacterPayload {
   total?: number,
   characters?: ICharacterAdapted[]
-  favorite?: number
+  favorite?: ICharacter
 }
 
 export interface ICharacterHandle {
