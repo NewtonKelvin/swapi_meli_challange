@@ -1,30 +1,29 @@
 'use client'
-import { GetCharactersAPI, SearchCharacterAPI } from '@/apis'
-import { CharacterCard } from '@/components'
+import { GetPlanetsAPI, SearchPlanetAPI } from '@/apis'
+import { PlanetCard } from '@/components'
 import Loading from '@/components/Loading'
 import UsePagination from '@/components/Pagination'
-import { ICharacterActions } from '@/context/types'
+import { IPlanetActions } from '@/context/types'
 import debounce from 'lodash.debounce'
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { useCharacters, useCharactersActions } from '../context.provider'
+import { usePlanets, usePlanetsActions } from '../context.provider'
 import { Colors } from '../global.styles'
 
 // const ITEMS_PER_PAGE = 10
 
-const CharacterPage = () => {
-  const characterActionsContext = useCharactersActions()
-  const characterContext = useCharacters()
-  const [chars, setChars] = useState(characterContext.characters)
-  // const [charTotal, setCharTotal] = useState()
+const PlanetPage = () => {
+  const planetActionsContext = usePlanetsActions()
+  const planetContext = usePlanets()
+  const [plnets, setPlnets] = useState(planetContext.planets)
 
   useEffect(() => {
-    setChars(characterContext.characters)
-  }, [characterContext.characters])
+    setPlnets(planetContext.planets)
+  }, [planetContext.planets])
 
   const [isLoading, setIsLoading] = useState(false)
   const [pagination, setPagination] = useState({
     current: 1,
-    total: characterContext?.total
+    total: planetContext?.total
   })
   const [search, setSearch] = useState('')
   const [debounceValue, setDebounceValue] = useState('')
@@ -35,7 +34,7 @@ const CharacterPage = () => {
 
   const handleDebounce = async (nextValue: string) => {
     setDebounceValue(nextValue)
-    handleSearchCharacter(nextValue)
+    handleSearchPlanet(nextValue)
   }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,41 +42,41 @@ const CharacterPage = () => {
     debouncedSave(e.target.value)
   }
 
-  const paginatedCharacters = debounceValue ? chars : chars.filter(
-    character => character.page === pagination.current
+  const paginatedPlanets = debounceValue ? plnets : plnets?.filter(
+    planet => planet.page === pagination.current
   )
 
-  const handleSearchCharacter = async (nextValue: string) => {
+  const handleSearchPlanet = async (nextValue: string) => {
     setIsLoading(true)
     if (!nextValue) {
       console.log('@@')
       setPagination({ current: 1, total: 1 })
-      getCharacters()
+      getPlanets()
       return setIsLoading(false)
     }
-    const response = await SearchCharacterAPI(nextValue, pagination.current)
-    setChars(response.results)
+    const response = await SearchPlanetAPI(nextValue, pagination.current)
+    setPlnets(response.results)
     setPagination(prev => ({ ...prev, total: Math.ceil(response.count / 10) }))
     setIsLoading(false)
   }
 
-  const getCharacters = async () => {
-    // if (paginatedCharacters?.length > 0 && chars?.length > 0) return
+  const getPlanets = async () => {
+    // if (paginatedPlanets?.length > 0 && plnets?.length > 0) return
     setIsLoading(true)
-    const response = await GetCharactersAPI(pagination.current)
+    const response = await GetPlanetsAPI(pagination.current)
     if (response) {
       const results = {
-        characters: response.results.map(
-          character => ({
-            ...character,
+        planets: response.results.map(
+          planet => ({
+            ...planet,
             favorite: false,
-            id: +character.url.replace(/\D/g, ''),
+            id: +planet.url.replace(/\D/g, ''),
             page: pagination.current
           })
         ),
         total: Math.ceil(response.count / 10)
       }
-      characterActionsContext?.({ type: ICharacterActions.ADD_CHARACTERS, payload: results })
+      planetActionsContext?.({ type: IPlanetActions.ADD_PLANET, payload: results })
       setPagination(prev => ({ ...prev, total: Math.ceil(response.count / 10) }))
     }
     setIsLoading(false)
@@ -89,10 +88,10 @@ const CharacterPage = () => {
 
   useEffect(() => {
     if (debounceValue) {
-      handleSearchCharacter(debounceValue)
+      handleSearchPlanet(debounceValue)
       return
     }
-    getCharacters()
+    getPlanets()
   }, [pagination.current])
 
   return (
@@ -116,7 +115,7 @@ const CharacterPage = () => {
         style={{ maxWidth: '300px' }}
       />
       {isLoading && <Loading />}
-      {!isLoading && chars?.length === 0 && (
+      {!isLoading && plnets?.length === 0 && (
         <h1 style={{ color: Colors.white }}>No results found...</h1>
       )}
       {!isLoading && (
@@ -127,11 +126,11 @@ const CharacterPage = () => {
           flexFlow: 'wrap',
           justifyContent: 'space-evenly'
         }}>
-          {paginatedCharacters?.map(
-            (character, index) =>
-              <CharacterCard
+          {paginatedPlanets?.map(
+            (planet, index) =>
+              <PlanetCard
                 key={index}
-                character={character}
+                planet={planet}
               />
           )}
           {pagination.total > 1 && (
@@ -147,4 +146,4 @@ const CharacterPage = () => {
   )
 }
 
-export default CharacterPage
+export default PlanetPage
