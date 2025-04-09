@@ -21,7 +21,11 @@ const useUtils = () => {
   }
   const path = usePathname().replace(/[^a-zA-Z]+/g, '')
   const currentPath = String(path).charAt(0).toUpperCase() + String(path).slice(1) || 'home'
-  return { formatDate, currentPath }
+  const extractIdFromUrl = (url: string): number => {
+    const matches = url.match(/\/(\d+)\/?$/)
+    return matches ? parseInt(matches[1], 10) : NaN
+  }
+  return { formatDate, currentPath, extractIdFromUrl }
 }
 
 export default useUtils
