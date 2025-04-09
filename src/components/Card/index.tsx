@@ -1,6 +1,6 @@
 'use client'
+import { useCharacters, useCharactersActions } from '@/app/context.provider'
 import { Colors } from '@/app/global.styles'
-import { useCharactersActions } from '@/context'
 import { ICharacterActions } from '@/context/types'
 import { ICharacterAdapted } from '@/interfaces/Character'
 import { Star } from '@mui/icons-material'
@@ -37,13 +37,16 @@ const CharacterInfo = ({ label, value, title = false }: ICharacterInfo) => {
   )
 }
 
-const CharacterCard = ({ character, favorite }: ICharacterCard) => {
+const CharacterCard = ({ character }: ICharacterCard) => {
 
   const characterActionsContext = useCharactersActions()
+  const charactersContext = useCharacters()
+  const isFavorite = charactersContext.favorites?.find(item => item.url === character.url)
+  // console.log('@@ XXXX', { isFavorite, fav: charactersContext })
   const handleFavorite = () => {
     console.log('@@ ADD')
     characterActionsContext?.({
-      type: favorite
+      type: isFavorite
         ? ICharacterActions.REMOVE_FAVORITE
         : ICharacterActions.ADD_FAVORITE,
       payload: { favorite: character }
@@ -62,7 +65,7 @@ const CharacterCard = ({ character, favorite }: ICharacterCard) => {
           <Button
             background={Colors.raisin_black}
             handleClick={handleFavorite}
-            color={favorite ? Colors.sage : Colors.white}
+            color={isFavorite ? Colors.sage : Colors.white}
             icon={<Star fontSize='small' />}
           />
         </ImageButtons>

@@ -3,9 +3,9 @@ import { GetCharactersAPI } from '@/apis'
 import { CharacterCard } from '@/components'
 import Loading from '@/components/Loading'
 import UsePagination from '@/components/Pagination'
-import { useCharacters, useCharactersActions } from '@/context'
 import { ICharacterActions } from '@/context/types'
 import { ChangeEvent, useEffect, useState } from 'react'
+import { useCharacters, useCharactersActions } from '../context.provider'
 
 // const ITEMS_PER_PAGE = 10
 
@@ -16,7 +16,7 @@ const CharacterPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [pagination, setPagination] = useState({
     current: 1,
-    total: characterContext.total
+    total: characterContext?.total
   })
 
   const paginatedCharacters = characterContext.characters.filter(
@@ -24,7 +24,6 @@ const CharacterPage = () => {
   )
 
   const getCharacters = async () => {
-    if (paginatedCharacters.length > 0 && characterContext.characters.length > 0) return
     setIsLoading(true)
     const response = await GetCharactersAPI(pagination.current)
     if (response) {
@@ -63,13 +62,12 @@ const CharacterPage = () => {
           <CharacterCard
             key={index}
             character={character}
-            favorite={characterContext.favorites?.some(item => item === character.id)}
           />
       )}
       <UsePagination
         current={pagination.current}
         setCurrent={handleChangePage}
-        total={pagination.total}
+        total={pagination?.total}
       />
     </>
   )

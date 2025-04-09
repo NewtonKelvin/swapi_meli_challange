@@ -1,14 +1,15 @@
 'use client'
 import { GetCharacterAPI } from '@/apis'
-import { initialCharacters, useCharacters } from '@/context'
+import { initialCharacters } from '@/context'
 import { ICharacter } from '@/interfaces/Character'
 import { useEffect, useState } from 'react'
+import { useCharacters } from '../context.provider'
 import { Colors } from '../global.styles'
 
 const FavoritesCharacters = () => {
 
   const [favChars, setFavChars] = useState<ICharacter[]>([])
-  const charactersContext = useCharacters()
+  const [characterContext, characterActionsContext] = useCharacters()
   // console.log('@@', { st: localStorage.getItem('favChars') })
 
   const getFavorites = async () => {

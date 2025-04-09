@@ -25,5 +25,6 @@ export interface ICharacterAdapted extends ICharacter {
 export interface ICharacterContext {
   characters: ICharacterAdapted[],
   total: number
-  favorites: number[]
+  favorites?: ICharacterAdapted[]
+  favorite?: ICharacter
 }

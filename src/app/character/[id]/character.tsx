@@ -1,8 +1,8 @@
 'use client'
 import { GetCharacterAPI } from '@/apis'
+import { useCharacters } from '@/app/context.provider'
 import { DetailedCard } from '@/components'
 import Loading from '@/components/Loading'
-import { useCharacters } from '@/context'
 import { ICharacter } from '@/interfaces/Character'
 import { useEffect, useState } from 'react'
 

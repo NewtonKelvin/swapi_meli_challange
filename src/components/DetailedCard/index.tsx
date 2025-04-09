@@ -1,6 +1,6 @@
 'use client'
+import { useCharacters } from '@/app/context.provider'
 import { Colors } from '@/app/global.styles'
-import { useCharacters, useCharactersActions } from '@/context'
 import { ICharacterActions } from '@/context/types'
 import { ICharacter } from '@/interfaces/Character'
 import useUtils from '@/utils/index'
@@ -59,8 +59,7 @@ const DetailedCard = ({ data, id }: IDetailedCard) => {
 
   const { formatDate } = useUtils()
 
-  const characterActionsContext = useCharactersActions()
-  const characterContext = useCharacters()
+  const [characterContext, characterActionsContext] = useCharacters()
   const favorite = useMemo(
     () => characterContext.favorites?.some(item => item === id),
     [characterContext, id]
@@ -71,7 +70,7 @@ const DetailedCard = ({ data, id }: IDetailedCard) => {
       type: favorite
         ? ICharacterActions.REMOVE_FAVORITE
         : ICharacterActions.ADD_FAVORITE,
-      payload: { favorite: data }
+      payload: { favorites: data }
     })
   }
 

@@ -1,5 +1,6 @@
 'use client'
-import { useCharacters } from '@/context'
+
+import { useCharacters } from './context.provider'
 
 export default function Home() {
 
