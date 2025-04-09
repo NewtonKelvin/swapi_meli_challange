@@ -1,5 +1,10 @@
 'use client'
-import { useCharacters, useCharactersActions, usePlanets, usePlanetsActions } from '@/app/context.provider'
+import {
+  useCharacters,
+  useCharactersActions,
+  usePlanets,
+  usePlanetsActions
+} from '@/app/context.provider'
 import { Colors } from '@/app/global.styles'
 import { ICharacterActions, IPlanetActions } from '@/context/types'
 import { ICharacterAdapted } from '@/interfaces/Character'

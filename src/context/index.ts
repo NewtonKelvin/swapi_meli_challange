@@ -16,7 +16,7 @@ export const initialPlanets: IPlanetContext = {
 
 
 export const characterReducer = (
-  state: ICharacterContext,
+  state, //: ICharacterContext,
   action: ICharacterHandle
 ) => {
   if (!state || !action) return state
@@ -76,7 +76,7 @@ export const characterReducer = (
 }
 
 export const planetReducer = (
-  state: IPlanetContext,
+  state, //: IPlanetContext,
   action: IPlanetHandle
 ) => {
   if (!state || !action) return state
