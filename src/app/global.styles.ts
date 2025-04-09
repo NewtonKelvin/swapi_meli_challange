@@ -38,6 +38,7 @@ export const Container = styled.main`
   flex-flow: wrap;
   background-color: ${Colors.night};
   height: 100%;
+  min-height: calc(100svh - 12.5rem);
 `
 
 export default GlobalStyles

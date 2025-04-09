@@ -25,7 +25,6 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     const favChars = localStorage.getItem('favChars')
     const stored = favChars ? JSON.parse(favChars) : []
     // if (!stored.length) return
-    console.log('@@ STORED', { stored })
     dispatchCharacter({
       type: ICharacterActions.INIT_FAVORITE,
       payload: { favorites: stored }
@@ -33,7 +32,6 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   }, [])
 
   const charValues = useMemo(() => {
-    console.log('@@ XD', { character })
     return character
   }, [character])
   const charActions = useMemo(() => {

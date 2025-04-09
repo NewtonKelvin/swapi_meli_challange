@@ -62,7 +62,7 @@ export const characterReducer = (
       localStorage.setItem('favChars', JSON.stringify(newStored2))
       return {
         ...state,
-        favorites: state.favorites.filter(item => item.url !== action.payload.favorite?.url),
+        favorites: state.favorites?.filter(item => item.url !== action.payload.favorite?.url),
       }
     default:
       return state

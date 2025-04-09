@@ -11,8 +11,7 @@ import Button from '../Button'
 import { CardStyle, ImageButtons, ImageContainer, InfoContainer } from './styles'
 
 interface ICharacterCard {
-  character: ICharacterAdapted,
-  favorite: boolean
+  character: ICharacterAdapted
 }
 
 interface ICharacterInfo {
@@ -42,9 +41,7 @@ const CharacterCard = ({ character }: ICharacterCard) => {
   const characterActionsContext = useCharactersActions()
   const charactersContext = useCharacters()
   const isFavorite = charactersContext.favorites?.find(item => item.url === character.url)
-  // console.log('@@ XXXX', { isFavorite, fav: charactersContext })
   const handleFavorite = () => {
-    console.log('@@ ADD')
     characterActionsContext?.({
       type: isFavorite
         ? ICharacterActions.REMOVE_FAVORITE
