@@ -7,6 +7,7 @@ import useUtils from '@/utils/index'
 import { Star } from '@mui/icons-material'
 import { Typography } from '@mui/material'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useMemo } from 'react'
 import Button from '../Button'
 import {
@@ -26,21 +27,49 @@ interface IDetailedCard {
 
 interface IPlanetInfo {
   label?: string,
-  value: string | undefined
+  value: string | string[]
   title?: boolean
+  link?: boolean
 }
 
-const PlanetInfo = ({ label, value, title = false }: IPlanetInfo) => {
+const PlanetInfo = ({ label, value, title = false, link = false }: IPlanetInfo) => {
+  const { extractIdFromUrl } = useUtils()
   const labelProps = title ? {
     color: Colors.white,
     fontWeight: 'bold',
     fontSize: 24,
     textTransform: 'uppercase',
-    padding: '16px 0'
+    padding: '16px 0',
+    alignItems: 'center',
+    width: '80px'
   } : {
     color: Colors.silver_lake_blue
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any
+  if (link && value) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <Typography {...labelProps} color={Colors.white} marginRight={1}>
+          {`${label}: `}
+        </Typography>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          color: Colors.white,
+          flexWrap: 'wrap',
+          gap: '6px'
+        }}>
+          {value?.map((char, index) => (
+            <>
+              <Link key={index} href={`/character/${extractIdFromUrl(char)}`}>
+                {`Character ${extractIdFromUrl(char)}${index + 1 < value.length ? ', ' : ''}`}
+              </Link>
+            </>
+          ))}
+        </div>
+      </div>
+    )
+  }
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       {label && (
@@ -75,6 +104,14 @@ const DetailedPlanet = ({ data, id }: IDetailedCard) => {
     })
   }
 
+  const calcTerrain = (terrain: string) => {
+    const quantity = terrain?.split(',').length
+    const hasMore = quantity > 1
+    const howMuchMore = quantity - 1
+    const mainTerrain = terrain?.split(',')[0]
+    return (`${mainTerrain} ${hasMore ? `+${howMuchMore}` : ''}`)
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'row', gap: 12 }}>
       <CardStyle rotation='portrait' size='content'>
@@ -83,7 +120,7 @@ const DetailedPlanet = ({ data, id }: IDetailedCard) => {
             <Button
               background={Colors.raisin_black}
               color={Colors.white}
-              text={data?.terrain}
+              text={calcTerrain(data?.terrain)}
             />
             <Button
               background={Colors.raisin_black}
@@ -125,15 +162,15 @@ const DetailedPlanet = ({ data, id }: IDetailedCard) => {
           </CharTitle>
           <InfoTable>
             <PlanetInfo label='Mass' value={`${data?.rotation_period}`} />
-            <PlanetInfo label='Hair color' value={`${data?.orbital_period}`} />
-            <PlanetInfo label='Skin color' value={`${data?.diameter}`} />
-            <PlanetInfo label='Eye color' value={`${data?.climate}`} />
-            <PlanetInfo label='Birth year' value={`${data?.gravity}`} />
-            <PlanetInfo label='Gender' value={`${data?.terrain}`} />
-            <PlanetInfo label='Homeworld' value={`${data?.surface_water}`} />
-            <PlanetInfo label='Films' value={`${data?.population}`} />
-            <PlanetInfo label='Species' value={`${data?.residents?.join(', ')}`} />
-            <PlanetInfo label='Vehicles' value={`${data?.films?.join(', ')}`} />
+            <PlanetInfo label='Orbital period' value={`${data?.orbital_period}`} />
+            <PlanetInfo label='Diameter' value={`${data?.diameter}`} />
+            <PlanetInfo label='Climate' value={`${data?.climate}`} />
+            <PlanetInfo label='Gravity' value={`${data?.gravity}`} />
+            <PlanetInfo label='Terrain' value={`${data?.terrain}`} />
+            <PlanetInfo label='Surface water' value={`${data?.surface_water}`} />
+            <PlanetInfo label='Population' value={`${data?.population}`} />
+            <PlanetInfo label='Residents' link value={data?.residents} />
+            <PlanetInfo label='Films' value={`${data?.films?.join(', ')}`} />
             <PlanetInfo label='Created' value={`${formatDate(data?.created)}`} />
             <PlanetInfo label='Edited' value={`${formatDate(data?.edited)}`} />
             <PlanetInfo label='Identifier' value={`${id}`} />

@@ -4,9 +4,11 @@ import { Colors } from '@/app/global.styles'
 import { ICharacterActions } from '@/context/types'
 import { ICharacter } from '@/interfaces/Character'
 import useUtils from '@/utils/index'
-import { Star } from '@mui/icons-material'
+import { Public, Star } from '@mui/icons-material'
 import { Typography } from '@mui/material'
 import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 import Button from '../Button'
 import {
@@ -28,19 +30,34 @@ interface ICharacterInfo {
   label?: string,
   value: string | undefined
   title?: boolean
+  link?: boolean
 }
 
-const CharacterInfo = ({ label, value, title = false }: ICharacterInfo) => {
+const CharacterInfo = ({ label, value, title = false, link = false }: ICharacterInfo) => {
+  const { extractIdFromUrl } = useUtils()
   const labelProps = title ? {
     color: Colors.white,
     fontWeight: 'bold',
     fontSize: 24,
     textTransform: 'uppercase',
-    padding: '16px 0'
+    padding: '16px 0',
+    alignItems: 'center'
   } : {
     color: Colors.silver_lake_blue
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any
+  if (link && value) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <Typography {...labelProps} color={Colors.white} marginRight={1}>
+          {`${label}: `}
+        </Typography>
+        <Link href={`/planet/${extractIdFromUrl(value || '99')}`}>
+          Planet {extractIdFromUrl(value)}
+        </Link>
+      </div>
+    )
+  }
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       {label && (
@@ -58,6 +75,8 @@ const CharacterInfo = ({ label, value, title = false }: ICharacterInfo) => {
 const DetailedCard = ({ data, id }: IDetailedCard) => {
 
   const { formatDate } = useUtils()
+  const { extractIdFromUrl } = useUtils()
+  const router = useRouter()
 
   const characterContext = useCharacters()
   const characterActionsContext = useCharactersActions()
@@ -80,10 +99,13 @@ const DetailedCard = ({ data, id }: IDetailedCard) => {
       <CardStyle rotation='portrait' size='content'>
         <ImageContainer>
           <ImageButtons>
+
             <Button
               background={Colors.raisin_black}
               color={Colors.white}
-              text={data?.homeworld.replace(/\D/g, '') || '?'}
+              icon={<Public />}
+              handleClick={
+                () => router.push(`/planet/${extractIdFromUrl(data?.homeworld || '99')}`)}
             />
             <Button
               background={Colors.raisin_black}
@@ -131,9 +153,9 @@ const DetailedCard = ({ data, id }: IDetailedCard) => {
             <CharacterInfo label='Eye color' value={`${data?.eye_color}`} />
             <CharacterInfo label='Birth year' value={`${data?.birth_year}`} />
             <CharacterInfo label='Gender' value={`${data?.gender}`} />
-            <CharacterInfo label='Homeworld' value={`${data?.homeworld}`} />
+            <CharacterInfo label='Homeworld' link value={`${data?.homeworld}`} />
             <CharacterInfo label='Films' value={`${data?.films?.join(', ')}`} />
-            <CharacterInfo label='Species' value={`${data?.species}`} />
+            <CharacterInfo label='Species' link value={`${data?.species}`} />
             <CharacterInfo label='Vehicles' value={`${data?.vehicles}`} />
             <CharacterInfo label='Starships' value={`${data?.starships}`} />
             <CharacterInfo label='Created' value={`${formatDate(data?.created)}`} />

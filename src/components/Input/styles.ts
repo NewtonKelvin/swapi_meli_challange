@@ -2,7 +2,8 @@ import { Colors } from '@/app/global.styles'
 import styled from 'styled-components'
 
 export const SearchInput = styled.input`
-  background-color: ${Colors.white};
+  background: ${Colors.paynes_gray};
+  color: ${Colors.white};
   padding: 0.5rem;
   font-family: "Outfit", sans-serif;
   border-radius: 8px;

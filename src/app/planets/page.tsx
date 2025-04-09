@@ -1,6 +1,7 @@
 'use client'
 import { GetPlanetsAPI, SearchPlanetAPI } from '@/apis'
 import { PlanetCard } from '@/components'
+import { SearchInput } from '@/components/Input/styles'
 import Loading from '@/components/Loading'
 import UsePagination from '@/components/Pagination'
 import { IPlanetActions } from '@/context/types'
@@ -49,7 +50,6 @@ const PlanetPage = () => {
   const handleSearchPlanet = async (nextValue: string) => {
     setIsLoading(true)
     if (!nextValue) {
-      console.log('@@')
       setPagination({ current: 1, total: 1 })
       getPlanets()
       return setIsLoading(false)
@@ -102,18 +102,22 @@ const PlanetPage = () => {
         gap: '32px 0px',
         alignItems: 'center'
       }}>
-      <h1 style={{
-        padding: '0px',
-        margin: '0px',
-        fontWeight: 'bold',
-        color: Colors.white
-      }}>Search: </h1>
-      <input
-        value={search}
-        onChange={(e) => handleChange(e)}
-        type='text'
-        style={{ maxWidth: '300px' }}
-      />
+      {!isLoading && (
+        <>
+          <h1 style={{
+            padding: '0px',
+            margin: '0px',
+            fontWeight: 'bold',
+            color: Colors.white
+          }}>Search: </h1>
+          <SearchInput
+            value={search}
+            onChange={(e) => handleChange(e)}
+            type='text'
+            style={{ maxWidth: '300px' }}
+          />
+        </>
+      )}
       {isLoading && <Loading />}
       {!isLoading && plnets?.length === 0 && (
         <h1 style={{ color: Colors.white }}>No results found...</h1>

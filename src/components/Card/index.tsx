@@ -5,10 +5,11 @@ import { ICharacterActions, IPlanetActions } from '@/context/types'
 import { ICharacterAdapted } from '@/interfaces/Character'
 import { IPlanetsAdapted } from '@/interfaces/Planet'
 import useUtils from '@/utils'
-import { Star } from '@mui/icons-material'
+import { Public, Star } from '@mui/icons-material'
 import { Typography } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import Button from '../Button'
 import { CardStyle, ImageButtons, ImageContainer, InfoContainer } from './styles'
 
@@ -44,6 +45,7 @@ const Info = ({ label, value, title = false }: ILabelInfo) => {
 const CharacterCard = ({ character }: ICharacterCard) => {
 
   const { extractIdFromUrl } = useUtils()
+  const router = useRouter()
 
   const characterActionsContext = useCharactersActions()
   const charactersContext = useCharacters()
@@ -64,7 +66,8 @@ const CharacterCard = ({ character }: ICharacterCard) => {
           <Button
             background={Colors.raisin_black}
             color={Colors.white}
-            text={extractIdFromUrl(character.homeworld) || '?'}
+            icon={<Public />}
+            handleClick={() => router.push(`/planet/${extractIdFromUrl(character.homeworld)}`)}
           />
           <Button
             background={Colors.raisin_black}
@@ -111,6 +114,14 @@ const PlanetCard = ({ planet }: IPlanetCard) => {
     })
   }
 
+  const calcTerrain = (terrain: string) => {
+    const quantity = terrain?.split(',').length
+    const hasMore = quantity > 1
+    const howMuchMore = quantity - 1
+    const mainTerrain = terrain?.split(',')[0]
+    return (`${mainTerrain} ${hasMore ? `+${howMuchMore}` : ''}`)
+  }
+
   return (
     <CardStyle>
       <ImageContainer>
@@ -118,7 +129,7 @@ const PlanetCard = ({ planet }: IPlanetCard) => {
           <Button
             background={Colors.raisin_black}
             color={Colors.white}
-            text={planet.terrain}
+            text={calcTerrain(planet.terrain)}
           />
           <Button
             background={Colors.raisin_black}
